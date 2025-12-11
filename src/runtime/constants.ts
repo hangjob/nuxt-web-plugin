@@ -1,0 +1,2 @@
+export const FUNCTION_SERIALIZE_PREFIX = '__NUXT_WEB_PLUGIN_FN__::'
+

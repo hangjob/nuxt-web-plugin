@@ -1,0 +1,40 @@
+1. 布局与UI组件 (Layout & UI)
+布局组件: Container、Grid、Header、Footer、Sidebar
+UI组件: Loading、Toast、Modal、BackToTop
+响应式设计: 自动适配各种屏幕尺寸
+2. SEO优化 (SEO Optimization)
+元标签管理: 自动生成合适的meta标签
+社交媒体: Open Graph 和 Twitter Cards
+结构化数据: JSON-LD 格式支持
+搜索引擎: 自动生成 Sitemap 和 Robots.txt
+3. 性能优化 (Performance)
+图片懒加载: 提升页面加载速度
+虚拟滚动: 处理大量数据的高性能滚动
+资源预加载: 智能预加载资源
+性能监控: Web Vitals 指标监控
+4. 状态与数据管理 (State Management)
+全局状态: 跨组件状态共享
+表单管理: 完整的表单处理和验证
+异步数据: Promise状态管理
+本地存储: 同步localStorage/sessionStorage
+历史状态: 撤销/重做功能
+5. 用户体验增强 (UX Enhancement)
+骨架屏: 提升感知加载速度
+空状态: 优雅的空数据展示
+图片预览: 快速预览功能
+交互组件: 工具提示、抽屉、下拉菜单、标签页、进度条
+6. 常用业务功能 (Business Features)
+分页组件: 灵活的分页功能
+评分组件: 用户评分界面
+剪贴板: 复制粘贴功能
+预留接口: 表格、上传、日期选择器等
+7. 移动端适配 (Mobile Adaptation)
+底部导航: 移动端导航栏
+下拉刷新: 移动端刷新手势
+滑动操作: 左滑删除等手势
+设备检测: 自动识别设备类型
+8. 安全功能 (Security)
+XSS防护: 输入过滤和清理
+CSRF保护: Token验证
+权限控制: 细粒度权限管理
+安全存储: 加密存储敏感数据
