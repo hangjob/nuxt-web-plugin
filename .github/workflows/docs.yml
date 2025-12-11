@@ -17,16 +17,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: pnpm
+          cache: npm  # 使用 npm 缓存，避免 pnpm 缓存触发未安装错误
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 8
           run_install: false
-
-      - name: Enable corepack
-        run: corepack enable
 
       - name: Install deps
         run: pnpm install
