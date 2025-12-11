@@ -1,8 +1,15 @@
 {
     "name": "nuxt-web-plugin",
-    "version": "1.0.1",
-    "description": "My new Nuxt module",
-    "repository": "your-org/my-module",
+    "version": "1.1.0",
+    "description": "面向 Nuxt 3/4 的增强插件：网络请求封装、安全加密与存储、SEO 助手、通用工具、设备检测。",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hangjob/nuxt-web-plugin.git"
+    },
+    "bugs": {
+        "url": "https://github.com/hangjob/nuxt-web-plugin/issues"
+    },
+    "homepage": "https://github.com/hangjob/nuxt-web-plugin#readme",
     "license": "MIT",
     "type": "module",
     "exports": {
