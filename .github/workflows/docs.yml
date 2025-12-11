@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22 # GitHub Actions 暂未支持 v24，换用最新的 LTS v22
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
