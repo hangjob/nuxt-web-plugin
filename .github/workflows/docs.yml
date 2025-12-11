@@ -27,6 +27,9 @@ jobs:
       - name: Install deps
         run: pnpm install --no-frozen-lockfile
 
+      - name: Prepare Nuxt
+        run: pnpm run dev:prepare # 生成 .nuxt 目录以修复 tsconfig 引用错误
+
       - name: Build docs
         run: pnpm docs:build
 
