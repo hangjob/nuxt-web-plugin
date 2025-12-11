@@ -3,7 +3,8 @@ import {defineConfig} from 'vitepress'
 export default defineConfig({
     title: "Nuxt Web Plugin",
     description: "功能强大的 Nuxt 3 插件，集成网络请求与安全套件",
-    outDir: "./docs_web",
+    // GitHub Pages 部署时的基础路径（与仓库名保持一致）
+    base: "/nuxt-web-plugin/",
     head: [
         ['link', {rel: 'icon', href: '/logo.svg'}]
     ],
