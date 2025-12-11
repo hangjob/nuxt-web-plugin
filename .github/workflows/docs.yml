@@ -17,7 +17,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm  # 使用 npm 缓存，避免 pnpm 缓存触发未安装错误
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -26,7 +27,7 @@ jobs:
           run_install: false
 
       - name: Install deps
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build docs
         run: pnpm docs:build
