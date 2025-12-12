@@ -7,8 +7,7 @@
 
 一个功能强大的 Nuxt 3 插件，提供常用的布局、UI组件、SEO 优化、安全功能和性能优化工具。
 
-- [📖 &nbsp;在线文档](http://localhost:5174) (本地开发时)
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
+- [📖 在线文档](https://hangjob.github.io/nuxt-web-plugin/)
 
 ## 特性
 

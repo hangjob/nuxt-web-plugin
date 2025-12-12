@@ -39,7 +39,7 @@ export default defineConfig({
         ],
 
         socialLinks: [
-            {icon: 'github', link: 'https://github.com/your-org/my-module'}
+            {icon: 'github', link: 'https://github.com/hangjob/nuxt-web-plugin'}
         ],
 
         footer: {
