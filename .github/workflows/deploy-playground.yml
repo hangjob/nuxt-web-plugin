@@ -1,12 +1,13 @@
-name: Deploy Playground
+name: Deploy Playground to Baota
 
 on:
   push:
-    branches: [main] # 只要 main 分支有变动就触发
-  workflow_dispatch: # 支持手动触发
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  deploy-to-baota: # 修改 Job ID
+    name: Upload to Server # 修改 Job 名称
     runs-on: ubuntu-latest
 
     steps:
