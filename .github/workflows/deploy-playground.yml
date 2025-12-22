@@ -57,4 +57,7 @@ jobs:
           # 必填: 远程服务器上的部署目标目录 (需确保 SSH 用户有写入权限)
           # 例如: /www/wwwroot/demo.nuxt-plugin.com
           TARGET: ${{ secrets.SERVER_TARGET }}
+          
+          # 增加排除列表，避免由于宝塔面板的 .user.ini 等文件权限问题导致部署失败
+          EXCLUDE: "/.user.ini, /.htaccess, /.well-known/, /cgi-bin/"
 
