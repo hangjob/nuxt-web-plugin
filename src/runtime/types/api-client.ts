@@ -45,6 +45,28 @@ export interface ApiRequestOptions {
    * 其它 `$fetch` 支持的原生参数
    */
   [key: string]: unknown
+
+  /**
+   * 缓存时间 (毫秒)，仅对 GET 有效。
+   * 设置为 true 使用默认值 (3000ms)，数字则为自定义时长。
+   */
+  cache?: boolean | number
+
+  /**
+   * 唯一请求键，用于缓存和去重。如果不传，自动根据 URL + 参数生成。
+   */
+  key?: string
+
+  /**
+   * 是否开启请求去重。默认 true (相同 key 的请求在 pending 状态时会共享 Promise)
+   */
+  dedupe?: boolean
+
+  /**
+   * 并发锁。如果设为 true，在前一个相同 key 的请求完成前，新的请求会被直接忽略。
+   * 适用于防止表单重复提交。
+   */
+  lock?: boolean
 }
 
 export interface NormalizedApiError {

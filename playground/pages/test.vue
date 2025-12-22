@@ -1,85 +1,94 @@
 <template>
-  <div style="min-height: 100vh; padding: 2rem;">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h1 style="font-size: 2rem; margin-bottom: 1rem;">🧪 安全功能测试页面</h1>
-      <div style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <h2 style="font-size: 1.2rem; font-weight: 600; color: #92400e; margin-bottom: 0.5rem;">安全配置</h2>
-      </div>
-
-      <div style="background: #ecfccb; border: 1px solid #bef264; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <h2 style="font-size: 1.2rem; font-weight: 600; color: #3f6212; margin-bottom: 0.5rem;">统一网络配置</h2>
-      </div>
-
-      <div style="background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.5rem; padding: 1rem; margin-bottom: 2rem;">
-        <h2 style="font-size: 1.2rem; font-weight: 600; color: #3730a3; margin-bottom: 0.5rem;">网络请求示例</h2>
-        <p style="font-size: 0.9rem; color: #3730a3; margin-bottom: 0.75rem;">
-          通过 <code>useApiClient</code> 调用 JSONPlaceholder，观察全局配置带来的效果。
-        </p>
-        <button
-          @click="fetchTodo"
-          :disabled="apiLoading"
-          style="background: #4f46e5; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.375rem; cursor: pointer;"
-        >
-          {{ apiLoading ? '请求中...' : '获取 Todo 示例' }}
-        </button>
-
-        <p v-if="apiError" style="color: #b91c1c; margin-top: 0.75rem;">请求失败：{{ apiError }}</p>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-        <NuxtLink
-          to="/"
-          style="background: #2563eb; color: white; padding: 1rem; border-radius: 0.5rem; text-decoration: none; text-align: center; display: block;"
-        >
-          🏠 首页
-        </NuxtLink>
-
-        <NuxtLink
-          to="/login"
-          style="background: #059669; color: white; padding: 1rem; border-radius: 0.5rem; text-decoration: none; text-align: center; display: block;"
-        >
-          🔑 登录
-        </NuxtLink>
-
-        <NuxtLink
-          to="/dashboard"
-          style="background: #7c3aed; color: white; padding: 1rem; border-radius: 0.5rem; text-decoration: none; text-align: center; display: block;"
-        >
-          📊 仪表板
-        </NuxtLink>
-
-        <NuxtLink
-          to="/admin"
-          style="background: #dc2626; color: white; padding: 1rem; border-radius: 0.5rem; text-decoration: none; text-align: center; display: block;"
-        >
-          👑 管理
+  <div class="min-h-screen bg-slate-50 p-8 font-sans text-slate-900">
+    <div class="mx-auto max-w-4xl space-y-8">
+      
+      <!-- 头部 -->
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900">功能测试控制台</h1>
+          <p class="mt-2 text-slate-500">实时验证插件的安全、网络与工具特性。</p>
+        </div>
+        <NuxtLink to="/" class="rounded-lg bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm ring-1 ring-slate-900/5 hover:text-slate-900">
+          返回首页
         </NuxtLink>
       </div>
 
-      <div style="margin-top: 2rem;">
-        <button
-          @click="testAuth"
-          style="background: #f59e0b; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.375rem; cursor: pointer; margin-right: 1rem;"
-        >
-          测试认证状态
-        </button>
+      <!-- 网格布局 -->
+      <div class="grid gap-6 md:grid-cols-2">
+        
+        <!-- 1. 水印测试 -->
+        <section class="rounded-2xl border border-indigo-100 bg-white p-6 shadow-sm ring-1 ring-slate-900/5 transition hover:shadow-md">
+          <div class="mb-4 flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-xl">🛡️</div>
+            <h2 class="text-lg font-semibold text-slate-900">页面水印</h2>
+          </div>
+          <p class="mb-4 text-sm text-slate-500">点击开启后，尝试使用 F12 删除水印节点，观察防篡改机制是否生效。</p>
+          <div class="flex gap-3">
+            <button
+              @click="enableWatermark"
+              class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              开启水印
+            </button>
+            <button
+              @click="disableWatermark"
+              class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50"
+            >
+              关闭
+            </button>
+          </div>
+        </section>
 
-        <button
-          @click="clearAuth"
-          style="background: #6b7280; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.375rem; cursor: pointer;"
-        >
-          清除认证
-        </button>
+        <!-- 2. 网络请求 -->
+        <section class="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm ring-1 ring-slate-900/5 transition hover:shadow-md">
+          <div class="mb-4 flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-xl">🌐</div>
+            <h2 class="text-lg font-semibold text-slate-900">网络请求 (Smart Fetch)</h2>
+          </div>
+          <p class="mb-4 text-sm text-slate-500">集成自动去重与缓存机制。点击多次按钮，观察 Network 面板的实际请求数。</p>
+          <div class="flex items-center gap-4">
+            <button
+              @click="fetchTodo"
+              :disabled="apiLoading"
+              class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {{ apiLoading ? '请求中...' : '发送 GET 请求' }}
+            </button>
+            <span v-if="apiResult" class="text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Status: 200 OK</span>
+          </div>
+          <p v-if="apiError" class="mt-3 text-sm text-red-600 bg-red-50 p-2 rounded">❌ {{ apiError }}</p>
+        </section>
+
+        <!-- 3. 安全配置查看 -->
+        <section class="rounded-2xl border border-slate-200 bg-slate-50/50 p-6 shadow-sm ring-1 ring-slate-900/5 md:col-span-2">
+          <div class="mb-4 flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-xl shadow-sm ring-1 ring-slate-900/5">⚙️</div>
+            <h2 class="text-lg font-semibold text-slate-900">当前运行时配置</h2>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="space-y-2">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500">Security Config</h3>
+              <pre class="overflow-auto rounded-lg bg-slate-900 p-4 text-xs text-slate-300">{{ securityConfig }}</pre>
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500">Network Config</h3>
+              <pre class="overflow-auto rounded-lg bg-slate-900 p-4 text-xs text-slate-300">{{ networkConfig }}</pre>
+            </div>
+          </div>
+        </section>
+
       </div>
-
-      <div style="margin-top: 1rem; font-size: 0.9rem; color: #6b7280;">
-        <p>💡 打开浏览器控制台查看安全配置、网络配置与本地存储加密结果</p>
+      
+      <!-- 底部提示 -->
+      <div class="text-center text-xs text-slate-400">
+        <p>💡 提示：所有配置均可在 nuxt.config.ts 中实时调整。</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+// 移除未使用的变量和方法，保持代码整洁
 const user = ref(null)
 const securityConfig = ref({})
 const networkConfig = ref({})
@@ -87,19 +96,24 @@ const apiResult = ref(null)
 const apiError = ref('')
 const apiLoading = ref(false)
 const apiClient = useApiClient()
+const { setWatermark, clearWatermark } = useWatermark()
+
+const enableWatermark = () => {
+  setWatermark({
+    text: 'Nuxt Web Plugin - 测试水印',
+    color: 'rgba(0, 0, 0, 0.15)',
+    fontSize: 16,
+    rotate: -20
+  })
+}
+
+const disableWatermark = () => {
+  clearWatermark()
+}
 
 // 在客户端获取数据
 if (process.client) {
-  const userStr = localStorage.getItem('user_info')
-  if (userStr) {
-    try {
-      user.value = JSON.parse(userStr)
-    } catch (e) {
-      console.error('解析用户信息失败:', e)
-    }
-  }
-
-  // 获取安全配置
+  // 获取配置
   try {
     const config = useRuntimeConfig()
     securityConfig.value = config.public.webPlugin?.security || {}
@@ -119,25 +133,6 @@ const fetchTodo = async () => {
     apiError.value = err?.message || '未知错误'
   } finally {
     apiLoading.value = false
-  }
-}
-
-const testAuth = () => {
-  if (process.client) {
-    const token = localStorage.getItem('auth_token')
-    const user = localStorage.getItem('user_info')
-    console.log('认证状态测试:', { token: !!token, user: !!user })
-    alert(`认证状态: Token=${!!token}, User=${!!user}`)
-  }
-}
-
-const clearAuth = () => {
-  if (process.client) {
-    localStorage.removeItem('auth_token')
-    localStorage.removeItem('user_info')
-    user.value = null
-    console.log('认证信息已清除')
-    alert('认证信息已清除')
   }
 }
 </script>

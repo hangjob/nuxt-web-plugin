@@ -274,7 +274,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { NuxtLink } from '#components'
+const NuxtLink = resolveComponent('NuxtLink')
 
 const content = {
   navItems: [

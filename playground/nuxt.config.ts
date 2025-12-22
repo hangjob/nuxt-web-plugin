@@ -1,13 +1,9 @@
+import webModule from '../src/module'
+
 export default defineNuxtConfig({
-    modules: ['@nuxtjs/tailwindcss', '../dist/module.mjs'],
+    modules: ['@nuxtjs/tailwindcss', webModule],
     devtools: {enabled: false},
     css: ['~/assets/css/tailwind.css'],
-    postcss: {
-        plugins: {
-            tailwindcss: {},
-            autoprefixer: {},
-        },
-    },
     webPlugin: {
         security: {
             crypto: {

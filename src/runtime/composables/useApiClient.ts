@@ -11,6 +11,11 @@ export function useApiClient() {
     const runtimeConfig = useRuntimeConfig()
     const networkConfig = runtimeConfig.public.webPlugin?.network as NetworkOptions | undefined
 
+    // 全局请求状态池 (URL => Promise)
+    const pendingRequests = useState<Map<string, Promise<any>>>('api_pending_requests', () => new Map())
+    // 全局缓存池 (URL => { data, timestamp })
+    const requestCache = useState<Map<string, { data: any, timestamp: number }>>('api_cache', () => new Map())
+
     const resolveFetcher = (): Fetcher => {
         const fetcher = (nuxtApp.$fetch ?? (globalThis as any).$fetch) as Fetcher | undefined
         if (!fetcher) {
@@ -62,18 +67,63 @@ export function useApiClient() {
         const fetcher = resolveFetcher()
         const finalOptions = mergeOptions(method as HttpMethod, options)
 
-        try {
-            // @ts-ignore
-            return await (fetcher as any)<T>(url, finalOptions)
-        } catch (error) {
-            const normalized = normalizeError(error)
-            console.error('[useApiClient] 请求失败:', normalized)
-            throw normalized
+        // 生成请求指纹 (Key)
+        const requestKey = options?.key || `${method}:${url}:${JSON.stringify(finalOptions.query || {})}:${JSON.stringify(finalOptions.body || {})}`
+
+        // 1. 并发锁 (Lock)
+        if (options?.lock && pendingRequests.value.has(requestKey)) {
+            console.warn(`[useApiClient] 请求已被锁定: ${url}`)
+            return new Promise(() => {}) as Promise<T> // 返回永远挂起的 Promise 或直接抛出
         }
+
+        // 2. 缓存处理 (Cache) - 仅 GET
+        if (method === 'GET' && options?.cache) {
+            const cached = requestCache.value.get(requestKey)
+            const ttl = typeof options.cache === 'number' ? options.cache : 3000 // 默认 3秒
+            const now = Date.now()
+
+            if (cached && (now - cached.timestamp < ttl)) {
+                return Promise.resolve(cached.data as T)
+            }
+        }
+
+        // 3. 请求去重 (Dedupe)
+        if (options?.dedupe !== false && pendingRequests.value.has(requestKey)) {
+            return pendingRequests.value.get(requestKey) as Promise<T>
+        }
+
+        const promise = (async () => {
+            try {
+                // @ts-ignore
+                const response = await (fetcher as any)<T>(url, finalOptions)
+
+                // 写入缓存
+                if (method === 'GET' && options?.cache) {
+                    requestCache.value.set(requestKey, {
+                        data: response,
+                        timestamp: Date.now()
+                    })
+                }
+
+                return response
+            } catch (error) {
+                const normalized = normalizeError(error)
+                console.error('[useApiClient] 请求失败:', normalized)
+                throw normalized
+            } finally {
+                // 请求完成后清理 Pending 状态
+                pendingRequests.value.delete(requestKey)
+            }
+        })()
+
+        // 记录 Pending 状态
+        pendingRequests.value.set(requestKey, promise)
+
+        return promise
     }
 
     const createMethod = (method: HttpMethod) => {
-        return <T>(url: string, options?: ApiRequestOptions) => request<T>(url, {...options, method})
+        return <T = any>(url: string, options?: ApiRequestOptions) => request<T>(url, {...options, method})
     }
 
     return {
