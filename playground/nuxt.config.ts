@@ -43,6 +43,9 @@ export default defineNuxtConfig({
         sing: '123',
     },
     nitro: {
+        prerender: {
+            failOnError: false, // 允许部分页面渲染失败（如外部链接检查）
+        },
         routeRules: {
             '/**': {
                 headers: {

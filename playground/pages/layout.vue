@@ -286,7 +286,7 @@ const content = {
   ],
   quickActions: [
     { label: '查看配置示例' },
-    { label: 'API 参考', to: '/docs' },
+    { label: 'API 参考', to: 'https://github.com/hangjob/nuxt-web-plugin#readme' },
     { label: '部署指南' },
     { label: '反馈建议' },
   ],
