@@ -2,11 +2,8 @@ name: Deploy Playground
 
 on:
   push:
-    branches: [main] # 仅 main 分支变动时触发
-    paths:
-      - 'playground/**' # 仅 playground 目录变动时触发
-      - 'src/**'        # 或源码变动时
-  workflow_dispatch:
+    branches: [main] # 只要 main 分支有变动就触发
+  workflow_dispatch: # 支持手动触发
 
 jobs:
   deploy:
