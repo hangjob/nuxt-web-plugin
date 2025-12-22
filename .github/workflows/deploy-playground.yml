@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
@@ -34,7 +34,7 @@ jobs:
         run: |
           pnpm run dev:prepare
           cd playground
-          pnpm generate # 使用 nuxi generate 生成静态文件
+          npx nuxi generate # 使用 npx 确保能找到 nuxi 命令
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
