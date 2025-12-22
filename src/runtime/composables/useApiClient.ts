@@ -93,8 +93,8 @@ export function useApiClient() {
         }
 
         const promise = (async () => {
-            try {
-                // @ts-ignore
+        try {
+            // @ts-ignore
                 const response = await (fetcher as any)<T>(url, finalOptions)
 
                 // 写入缓存
@@ -106,10 +106,10 @@ export function useApiClient() {
                 }
 
                 return response
-            } catch (error) {
-                const normalized = normalizeError(error)
-                console.error('[useApiClient] 请求失败:', normalized)
-                throw normalized
+        } catch (error) {
+            const normalized = normalizeError(error)
+            console.error('[useApiClient] 请求失败:', normalized)
+            throw normalized
             } finally {
                 // 请求完成后清理 Pending 状态
                 pendingRequests.value.delete(requestKey)

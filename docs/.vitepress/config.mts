@@ -23,8 +23,10 @@ export default defineConfig({
                 items: [
                     {text: '简介', link: '/guide/introduction'},
                     {text: '安装', link: '/guide/installation'},
+                    {text: '提交规范', link: '/guide/commit-convention'},
                     {text: '配置', link: '/guide/configuration'},
-                    {text: '自动化部署', link: '/guide/deploy'},
+                    {text: '部署文档', link: '/guide/deploy'},
+                    {text: '部署演示 (Playground)', link: '/guide/deploy-playground'},
                 ]
             },
             {
