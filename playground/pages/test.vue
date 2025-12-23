@@ -7,7 +7,7 @@
         <div>
           <h1 class="text-3xl font-bold tracking-tight text-slate-900">功能测试控制台</h1>
           <p class="mt-2 text-slate-500">实时验证插件的安全、网络与工具特性。</p>
-        </div>
+      </div>
         <NuxtLink to="/" class="rounded-lg bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm ring-1 ring-slate-900/5 hover:text-slate-900">
           返回首页
         </NuxtLink>
@@ -30,12 +30,12 @@
             >
               开启水印
             </button>
-            <button
+        <button
               @click="disableWatermark"
               class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50"
-            >
+        >
               关闭
-            </button>
+        </button>
           </div>
         </section>
 
@@ -47,13 +47,13 @@
           </div>
           <p class="mb-4 text-sm text-slate-500">集成自动去重与缓存机制。点击多次按钮，观察 Network 面板的实际请求数。</p>
           <div class="flex items-center gap-4">
-            <button
+        <button
               @click="fetchTodo"
               :disabled="apiLoading"
               class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+        >
               {{ apiLoading ? '请求中...' : '发送 GET 请求' }}
-            </button>
+        </button>
             <span v-if="apiResult" class="text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Status: 200 OK</span>
           </div>
           <p v-if="apiError" class="mt-3 text-sm text-red-600 bg-red-50 p-2 rounded">❌ {{ apiError }}</p>
@@ -78,7 +78,7 @@
         </section>
 
       </div>
-      
+
       <!-- 底部提示 -->
       <div class="text-center text-xs text-slate-400">
         <p>💡 提示：所有配置均可在 nuxt.config.ts 中实时调整。</p>

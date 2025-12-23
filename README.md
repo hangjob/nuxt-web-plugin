@@ -8,6 +8,7 @@
 一个功能强大的 Nuxt 3 插件，提供常用的布局、UI组件、SEO 优化、安全功能和性能优化工具。
 
 - [📖 在线文档](https://hangjob.github.io/nuxt-web-plugin/)
+- [🚀 演示地址 (Playground)](http://nuxt.haiwb.com/)
 
 ## 特性
 
@@ -166,9 +167,11 @@ const fetchTodo = async () => {
 
 ## 布局展示模板（Playground）
 
-- 访问 `http://localhost:3000/layout` 体验“头部菜单 + 左右布局 + Footer”组合页面
+- 访问 [nuxt.haiwb.com](http://nuxt.haiwb.com/) 体验“头部菜单 + 左右布局 + Footer”组合页面
 - 展示插件信息、快捷入口、统计卡、模块介绍与模板库
-- 同样支持 Tailwind 暗色模式，并与 `/test` 页面互相跳转
+- 支持自动去重、短时缓存、并发锁等高级网络功能
+- 内置页面水印系统（Anti-Tamper Watermark）
+- 完美支持 Tailwind 暗色模式切换
 
 ## 文档
 

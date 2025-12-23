@@ -1,6 +1,7 @@
 import {useNuxtApp, useRuntimeConfig} from '#app'
+import {useHash, useAsymmetricCrypto, useSymmetricCrypto} from './useCrypto'
 import type {ApiRequestOptions, HttpMethod, NormalizedApiError} from '../types/api-client'
-import type {NetworkOptions} from '../types/module-options'
+import type {NetworkOptions, SecurityOptions} from '../types/module-options'
 
 type Fetcher = typeof globalThis extends { $fetch: infer F } ? F : typeof globalThis.fetch
 
@@ -10,6 +11,10 @@ export function useApiClient() {
     const nuxtApp = useNuxtApp()
     const runtimeConfig = useRuntimeConfig()
     const networkConfig = runtimeConfig.public.webPlugin?.network as NetworkOptions | undefined
+    const securityConfig = runtimeConfig.public.webPlugin?.security as SecurityOptions | undefined
+    const { sha256, generateSalt } = useHash()
+    const { sign: rsaSign } = useAsymmetricCrypto()
+    const { encrypt: aesEncrypt } = useSymmetricCrypto()
 
     // 全局请求状态池 (URL => Promise)
     const pendingRequests = useState<Map<string, Promise<any>>>('api_pending_requests', () => new Map())
@@ -66,6 +71,58 @@ export function useApiClient() {
 
         const fetcher = resolveFetcher()
         const finalOptions = mergeOptions(method as HttpMethod, options)
+
+        // API 签名逻辑
+        if (securityConfig?.apiSignature?.enabled) {
+            const { 
+                appKey, 
+                appSecret, 
+                privateKey,
+                algorithm = 'SHA-256',
+                headerPrefix = 'X-Hmac-' 
+            } = securityConfig.apiSignature
+
+            const timestamp = Date.now().toString()
+            const nonce = generateSalt(16)
+            let signature = ''
+
+            try {
+                // 统一构造基础凭证对象 (所有算法通用)
+                // 仅包含最基础的认证信息，不包含不稳定的 URL/Body/Query
+                // 解决了前后端参数序列化不一致导致签名失败的问题
+                const tokenPayload = JSON.stringify({
+                    timestamp,
+                    nonce,
+                    appKey,
+                })
+
+                if (algorithm === 'AES-GCM' && appSecret) {
+                    // AES: 直接加密凭证对象
+                    signature = await aesEncrypt(tokenPayload, appSecret)
+                } else if (algorithm === 'RSA-SHA256' && privateKey) {
+                    // RSA: 对凭证对象进行签名
+                    signature = await rsaSign(tokenPayload, privateKey)
+                } else if (appSecret) {
+                    // SHA-256: 对 (凭证对象 + Secret) 进行哈希
+                    signature = await sha256(tokenPayload + appSecret)
+                } else {
+                     console.warn('[useApiClient] API 签名已开启但未配置有效的密钥')
+                }
+            } catch (e) {
+                console.error('[useApiClient] 签名生成失败:', e)
+            }
+
+            if (signature) {
+                finalOptions.headers = {
+                    ...finalOptions.headers,
+                    [`${headerPrefix}Key`]: appKey || '',
+                    [`${headerPrefix}Timestamp`]: timestamp,
+                    [`${headerPrefix}Nonce`]: nonce,
+                    [`${headerPrefix}Signature`]: signature,
+                    [`${headerPrefix}Algorithm`]: algorithm, // 告知服务端使用的算法
+                }
+            }
+        }
 
         // 生成请求指纹 (Key)
         const requestKey = options?.key || `${method}:${url}:${JSON.stringify(finalOptions.query || {})}:${JSON.stringify(finalOptions.body || {})}`

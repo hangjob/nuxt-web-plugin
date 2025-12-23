@@ -1,6 +1,6 @@
 {
   "name": "nuxt-web-plugin",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "面向 Nuxt 3/4 的增强插件：网络请求封装、安全加密与存储、SEO 助手、通用工具、设备检测。",
   "repository": {
     "type": "git",

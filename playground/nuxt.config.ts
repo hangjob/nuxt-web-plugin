@@ -15,6 +15,12 @@ export default defineNuxtConfig({
                 enabled: true,
                 storage: true,
             },
+            apiSignature: {
+                enabled: true,
+                algorithm: 'AES-GCM',
+                appKey: 'playground-app',
+                appSecret: 'demo-secret-key-123456', // 演示用，生产环境请用更复杂的密钥
+            }
         },
         network: {
             enabled: true,
